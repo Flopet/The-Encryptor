@@ -1,7 +1,17 @@
+#!/usr/bin/env python
+
 import os
 from os.path import exists
 import time
 from cryptography.fernet import Fernet as fn
+import sys
+import signal
+
+def exit_handler(sig, frame):
+    print("\n\nApplication exited succesfully\n\n")
+    sys.exit(0)
+
+signal.signal(signal.SIGINT, exit_handler)
 
 # prereqs
 def p(input):
@@ -121,6 +131,7 @@ def new_command(key):
 	encrypt 			Encrypts all files in the CWD
 	decrypt 			Decrypts all files within the CWD.
 	makey 				Make a new file containing the decryption key if needed.
+	quit (q)			Exit the program
 		''')
 		new_command(key)
 	elif cmd == "encrypt":
