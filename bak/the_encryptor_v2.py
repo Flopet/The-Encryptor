@@ -1,7 +1,6 @@
 import os
 from os.path import exists
 import time
-from tkinter import N
 from cryptography.fernet import Fernet as fn
 
 # prereqs
@@ -22,20 +21,15 @@ def goodbye():
 		bye += "."
 
 key = ""
-skip_files = ["the_encryptor_v2.py", ".keyfile"]
-
-#def reset_files():
-#		files = []
 files = []
-def load_files(skip):
-	files = []
-	for file in os.listdir():
-		if os.path.isfile(file):
-			files.append(file)
-		for l in skip:
-			if file == l:
-				files.remove(l)
-load_files(skip_files)
+skip_files = ["the_encryptor_v2.py", ".keyfile"]
+for file in os.listdir():
+	if file == skip_files[file]:
+		continue
+	if os.path.isfile(file):
+		files.append(file)
+
+
 
 
 
@@ -63,10 +57,6 @@ def dc(files):
 			thefile.write(decrypted_contents)
 	p("Files decrypted!")
 
-
-#  Remove file command
-def remove_file(removed_file):
-	skip_files.append(removed_file)
 
 
 
@@ -113,6 +103,16 @@ def key_declaration():
 			key_file.write(key)
 		return key
 		time.sleep(2)
+
+
+
+
+
+
+def remove_file(removed_file):
+	files = files.append(removed_file)
+
+
 
 
 
@@ -166,7 +166,6 @@ def new_command(key):
 # BEGIN
 def begin():
 	clear()
-	load_files(skip_files)
 	p("""
 	-------------------------------------------------------------------------------------------------------
 	Welcome to the file encryptor. All files within the current directory will be targeted by this program.
