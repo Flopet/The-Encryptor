@@ -22,11 +22,13 @@ def goodbye():
 
 key = ""
 files = []
-for file in os.listdir():
-	if file == "the_encryptor_v2.py" or file == ".keyfile":
-		continue
-	if os.path.isfile(file):
-		files.append(file)
+	for file in os.listdir():
+		l = len(skip)-1
+		if file == skip_files[l]:
+			p("\n\n\n" + skip_files[l] + "\n\n\n")
+			continue
+		if os.path.isfile(file):
+			files.append(file)
 
 
 
