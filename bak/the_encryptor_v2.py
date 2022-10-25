@@ -1,18 +1,7 @@
-#!/usr/bin/env python
-
 import os
 from os.path import exists
 import time
-from tkinter import N
 from cryptography.fernet import Fernet as fn
-import sys
-import signal
-
-def exit_handler(sig, frame):
-    print("\n\nApplication exited succesfully\n\n")
-    sys.exit(0)
-
-signal.signal(signal.SIGINT, exit_handler)
 
 # prereqs
 def p(input):
@@ -32,20 +21,15 @@ def goodbye():
 		bye += "."
 
 key = ""
-skip_files = ["the_encryptor_v2.py", ".keyfile"]
-
-#def reset_files():
-#		files = []
 files = []
-def load_files(skip):
-	files = []
-	for file in os.listdir():
-		if os.path.isfile(file):
-			files.append(file)
-		for l in skip:
-			if file == l:
-				files.remove(l)
-load_files(skip_files)
+skip_files = ["the_encryptor_v2.py", ".keyfile"]
+for file in os.listdir():
+	if file == skip_files[file]:
+		continue
+	if os.path.isfile(file):
+		files.append(file)
+
+
 
 
 
@@ -73,10 +57,6 @@ def dc(files):
 			thefile.write(decrypted_contents)
 	p("Files decrypted!")
 
-
-#  Remove file command
-def remove_file(removed_file):
-	skip_files.append(removed_file)
 
 
 
@@ -129,6 +109,16 @@ def key_declaration():
 
 
 
+def remove_file(removed_file):
+	files = files.append(removed_file)
+
+
+
+
+
+
+
+
 # commands
 
 def new_command(key):
@@ -139,7 +129,6 @@ def new_command(key):
 	encrypt 			Encrypts all files in the CWD
 	decrypt 			Decrypts all files within the CWD.
 	makey 				Make a new file containing the decryption key if needed.
-	quit (q)			Exit the program
 		''')
 		new_command(key)
 	elif cmd == "encrypt":
@@ -177,7 +166,6 @@ def new_command(key):
 # BEGIN
 def begin():
 	clear()
-	load_files(skip_files)
 	p("""
 	-------------------------------------------------------------------------------------------------------
 	Welcome to the file encryptor. All files within the current directory will be targeted by this program.
