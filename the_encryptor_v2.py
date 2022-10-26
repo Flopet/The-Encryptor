@@ -22,20 +22,14 @@ def goodbye():
 		bye += "."
 
 key = ""
-skip_files = ["the_encryptor_v2.py", ".keyfile"]
+skip_files = ["the_encryptor_v2.py", ".keyfile", ".gitignore"]
 
-#def reset_files():
-#		files = []
 files = []
-def load_files(skip):
-	files = []
+def load_files():
+	files.clear()
 	for file in os.listdir():
-		if os.path.isfile(file):
+		if os.path.isfile(file) and file not in skip_files:
 			files.append(file)
-		for l in skip:
-			if file == l:
-				files.remove(l)
-load_files(skip_files)
 
 
 
@@ -166,7 +160,7 @@ def new_command(key):
 # BEGIN
 def begin():
 	clear()
-	load_files(skip_files)
+	load_files()
 	p("""
 	-------------------------------------------------------------------------------------------------------
 	Welcome to the file encryptor. All files within the current directory will be targeted by this program.
