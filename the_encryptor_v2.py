@@ -28,6 +28,7 @@ skip_files = ["the_encryptor_v2.py", ".keyfile"]
 #		files = []
 files = []
 def load_files(skip):
+	global files
 	files = []
 	for file in os.listdir():
 		if os.path.isfile(file):
@@ -35,7 +36,6 @@ def load_files(skip):
 		for l in skip:
 			if file == l:
 				files.remove(l)
-load_files(skip_files)
 
 
 
@@ -129,6 +129,7 @@ def new_command(key):
 	encrypt 			Encrypts all files in the CWD
 	decrypt 			Decrypts all files within the CWD.
 	makey 				Make a new file containing the decryption key if needed.
+	quit, q				Close Program
 		''')
 		new_command(key)
 	elif cmd == "encrypt":
