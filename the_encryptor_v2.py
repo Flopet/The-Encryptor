@@ -1,12 +1,11 @@
 import os
 from os.path import exists
 import time
-from tkinter import N
-from cryptography.fernet import Fernet as fn
+from cryptography.fernet import Fernet as Fn
 
 # prereqs
-def p(input):
-	print(input)
+def p(text):
+	print(text)
 def clear():
 	os.system("clear")
 
@@ -42,25 +41,25 @@ def load_files(skip):
 
 
 # encryptor
-def ec(files, key):
-	for file in files:
-		with open(file, "rb") as thefile:
-			original_contents = thefile.read()
-		encrypted_contents = fn(key).encrypt(original_contents)
-		with open(file, "wb") as thefile:
-			thefile.write(encrypted_contents)
+def ec(target_files, encryption_key):
+	for file in target_files:
+		with open(file, "rb") as theFile:
+			original_contents = theFile.read()
+		encrypted_contents = Fn(encryption_key).encrypt(original_contents)
+		with open(file, "wb") as theFile:
+			theFile.write(encrypted_contents)
 	p("Encryption complete!")
 
 # decryptor
-def dc(files):
-	with open(".keyfile", 'rb') as key:
-		dc_key = key.read()
-	for file in files:
-		with open(file, "rb") as thefile:
-			encrypted_contents = thefile.read()
-		decrypted_contents = fn(dc_key).decrypt(encrypted_contents)
-		with open(file, "wb") as thefile:
-			thefile.write(decrypted_contents)
+def dc(target_files):
+	with open(".keyfile", 'rb') as keyfile:
+		dc_key = keyfile.read()
+	for file in target_files:
+		with open(file, "rb") as theFile:
+			encrypted_contents = theFile.read()
+		decrypted_contents = Fn(dc_key).decrypt(encrypted_contents)
+		with open(file, "wb") as theFile:
+			theFile.write(decrypted_contents)
 	p("Files decrypted!")
 
 
@@ -85,34 +84,30 @@ def key_declaration():
 			confirmation = input("Are you sure? This will overwrite the existing key (y/n)! " )
 			confirmation = confirmation.lower()
 			if confirmation == 'y':
-				key = fn.generate_key()
+				new_key = Fn.generate_key()
 				with open(".keyfile", 'wb') as key_file:
-					key_file.write(key)
+					key_file.write(new_key)
 				p("Key has been generated.")
-				key = open(".keyfile", 'rb')
-				key = key.read()
-				return key
-				time.sleep(2)
+				with open(".keyfile", 'rb') as keyfile:
+					new_key = keyfile.read()
+				return new_key
 			else:
 				p("Original key will be used.")
-				key = open('.keyfile', 'rb')
-				key = key.read()
-				return key
-				time.sleep(2)
+				with open('.keyfile', 'rb') as keyfile:
+					existing_key = keyfile.read()
+				return existing_key
 		else:
 			p("Original key will be used.")
-			key = open('.keyfile', 'rb')
-			key = key.read()
-			return key
-			time.sleep(2)
+			with open('.keyfile', 'rb') as keyfile:
+				existing_key = keyfile.read()
+			return existing_key
 	else:
 
 		p("Generating new key to .keyfile")
-		key = fn.generate_key()
+		new_key = Fn.generate_key()
 		with open(".keyfile", "wb") as key_file:
-			key_file.write(key)
-		return key
-		time.sleep(2)
+			key_file.write(new_key)
+		return new_key
 
 
 
@@ -121,7 +116,7 @@ def key_declaration():
 
 # commands
 
-def new_command(key):
+def new_command(current_key):
 	cmd = input("> ")
 	cmd = cmd.lower()
 	if cmd == "help":
@@ -131,20 +126,20 @@ def new_command(key):
 	makey 				Make a new file containing the decryption key if needed.
 	quit, q				Close Program
 		''')
-		new_command(key)
+		new_command(current_key)
 	elif cmd == "encrypt":
-		ec(files, key)
+		ec(files, current_key)
 		time.sleep(2)
-		new_command(key)
+		new_command(current_key)
 	elif cmd == "decrypt":
 		dc(files)
 		time.sleep(2)
-		new_command(key)
+		new_command(current_key)
 	elif cmd == "makey":
 		key_declaration()
 		p("Key file generated!")
 		time.sleep(2)
-		new_command(key)
+		new_command(current_key)
 	elif cmd == 'remfile':
 		removed_file = input("What file would you like to remove? ")
 		remove_file(removed_file)
@@ -158,7 +153,7 @@ def new_command(key):
 		quit()
 	else:
 		p("That is not a recognized command, please try again...")
-		new_command(key)
+		new_command(current_key)
 
 
 
@@ -178,6 +173,6 @@ def begin():
 	\n
 	\n
 	""")
-	key = key_declaration()
-	new_command(key)
+	current_key = key_declaration()
+	new_command(current_key)
 begin()
